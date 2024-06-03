@@ -1,11 +1,13 @@
+// SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+// import { ERC721Pausable } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 
-contract Doodles is ERC721, ERC721Enumerable, Ownable {
+contract Doodles is ERC721Enumerable, Ownable {
     string public PROVENANCE;
     bool public saleIsActive = false;
     string private _baseURIextended;
@@ -17,7 +19,7 @@ contract Doodles is ERC721, ERC721Enumerable, Ownable {
 
     mapping(address => uint8) private _allowList;
 
-    constructor() ERC721("Doodles", "DOODLE") {
+    constructor() ERC721("Doodles", "DOODLE") Ownable(msg.sender) {
     }
 
     function setIsAllowListActive(bool _isAllowListActive) external onlyOwner {
@@ -47,11 +49,11 @@ contract Doodles is ERC721, ERC721Enumerable, Ownable {
         }
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721, ERC721Enumerable) {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
+    // function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal virtual {
+    //     super._beforeTokenTransfer(from, to, tokenId);
+    // }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, ERC721Enumerable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
@@ -95,4 +97,5 @@ contract Doodles is ERC721, ERC721Enumerable, Ownable {
         uint balance = address(this).balance;
         payable(msg.sender).transfer(balance);
     }
+    
 }
