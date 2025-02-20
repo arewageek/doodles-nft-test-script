@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { ethers, utils } = require("hardhat");
+const { ethers } = require("hardhat");
 
 describe("Doodles Smart Contract Test", function () {
   let Doodles, addrs, addr1, addr2, addr3, owner, doodleContract;
